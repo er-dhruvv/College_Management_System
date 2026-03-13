@@ -6,6 +6,8 @@
 
 # node modules
 node_modules/
+Frontend/node_modules/
+Backend/node_modules/
 
 # logs
 logs
