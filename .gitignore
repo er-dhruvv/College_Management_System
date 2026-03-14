@@ -12,3 +12,5 @@ Backend/node_modules/
 # logs
 logs
 *.log
+# profilePictures
+Backend/ProfilePicture/
