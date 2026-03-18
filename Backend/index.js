@@ -10,7 +10,7 @@ import { Isloggedin } from "./authentication/Isloggedin.js";
 import { getLeaveDetailStudent } from "./getLeaveDetailStudent.js";
 import { ProfileStudent } from "./ProfileDetails.js";
 import { UpdateuserData } from "./UpdateuserData.js";
-import { getAllStudentLeave } from "./getAllstudentLeave.js";
+import { getAllStudentLeave } from "./getAllStudentLeave.js";
 import studentRoutes from "./routes/studentRoutes.js";
 import marksRoutes from "./routes/marksRoutes.js";
 import { Attendance } from "./Attendance.js";
