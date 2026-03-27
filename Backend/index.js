@@ -27,25 +27,25 @@ const PORT = process.env.PORT || 5000;
 
 
 // ✅ CORS CONFIG (FINAL FIX 🔥)
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "https://college-management-system-jw7x.vercel.app"
-];
+// const allowedOrigins = [
+//   "http://localhost:5173",
+//   "http://127.0.0.1:5173",
+//   "https://college-management-system-jw7x.vercel.app"
+// ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+//     if (allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true
+// }));
 
 app.use(cors({
   origin: true,
