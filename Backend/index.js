@@ -1,55 +1,77 @@
 import express from "express";
 import cors from "cors";
 import connectDB from "./config/dbconnection.js";
-import { login } from "./authentication/login.js";
-import { LeaveForm } from "./LeaveForm.js";
 import cookieParser from "cookie-parser";
+
+// ROUTES / FUNCTIONS
+import { login } from "./authentication/login.js";
 import logout from "./authentication/logout.js";
-import { getInfo } from "./getInfo.js";
 import { Isloggedin } from "./authentication/Isloggedin.js";
+
+import { getInfo } from "./getInfo.js";
+import { LeaveForm } from "./LeaveForm.js";
 import { getLeaveDetailStudent } from "./getLeaveDetailStudent.js";
+import { getAllStudentLeave } from "./getAllStudentLeave.js";
+
 import { ProfileStudent } from "./ProfileDetails.js";
 import { UpdateuserData } from "./UpdateuserData.js";
-import { getAllStudentLeave } from "./getAllStudentLeave.js";
-import studentRoutes from "./routes/studentRoutes.js";
-import marksRoutes from "./routes/marksRoutes.js";
+
 import { Attendance } from "./Attendance.js";
 import { subjects } from "./Subjects.js";
 
+import studentRoutes from "./routes/studentRoutes.js";
+import marksRoutes from "./routes/marksRoutes.js";
+
 const app = express();
-let Port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
-import cors from "cors";
+// ✅ FIXED CORS (ALLOW ALL FOR NOW)
+app.use(cors());
 
-app.use(cors({
-  origin: "*"
-}));
+// OPTIONAL (if you use cookies)
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
+// MIDDLEWARES
 app.use(express.json());
 app.use(cookieParser());
+
+// STATIC FOLDER
 app.use("/ProfilePicture", express.static("ProfilePicture"));
 
+// CONNECT DATABASE
 connectDB();
 
+// ROUTES / APIs
 login(app);
-
+logout(app);
 Isloggedin(app);
 
 getInfo(app);
-
-getLeaveDetailStudent(app);
 LeaveForm(app);
+getLeaveDetailStudent(app);
 getAllStudentLeave(app);
 
+ProfileStudent(app);
+UpdateuserData(app);
+
+Attendance(app);
+subjects(app);
+
+// ROUTER FILES
 app.use("/api/students", studentRoutes);
 app.use("/api/marks", marksRoutes);
 
-subjects(app);
+// TEST ROUTE (VERY IMPORTANT 🔥)
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
 
-UpdateuserData(app);
-ProfileStudent(app);
-Attendance(app);
-logout(app);
-
-app.listen(Port, () => {
-  console.log(`port ${Port} is listening`);
+// START SERVER
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
