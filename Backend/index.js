@@ -25,16 +25,27 @@ import marksRoutes from "./routes/marksRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ FIXED CORS (ALLOW ALL FOR NOW)
-app.use(cors());
+import cors from "cors";
 
-// OPTIONAL (if you use cookies)
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
+const allowedOrigins = [
+  "http://localhost:5173",   // Vite local
+  "http://127.0.0.1:5173",  // alternative local
+  "https://college-management-system-jw7x.vercel.app" // production
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin (like Postman)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+}));
 
 // MIDDLEWARES
 app.use(express.json());
