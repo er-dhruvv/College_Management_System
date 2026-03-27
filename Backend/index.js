@@ -47,8 +47,11 @@ app.use(cors({
   credentials: true
 }));
 
-// 🔥 IMPORTANT: HANDLE PREFLIGHT REQUESTS
-app.options("*", cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+
 
 
 // MIDDLEWARES
