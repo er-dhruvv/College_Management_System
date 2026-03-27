@@ -42,7 +42,7 @@ const LeaveDataFaculty = () => {
         {
           leaveId,
           status,
-          facultyRemark: remarksMap[leaveId].trimEnd() || "",
+          facultyRemark: remarksMap[leaveId] ? remarksMap[leaveId].trimEnd() : "",
         },
         { withCredentials: true },
       );
