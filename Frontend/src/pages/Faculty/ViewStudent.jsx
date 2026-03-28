@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const ViewStudent = () => {
+  const { showNotification } = useNotification();
   const { Enrollno } = useParams();
   const [Edit, setEdit] = useState(false);
   const [Info, setInfo] = useState({});
@@ -74,7 +76,7 @@ const ViewStudent = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
 
       console.log(res.data);
       // ✅ instant UI update
@@ -279,7 +281,7 @@ const ViewStudent = () => {
                 );
 
                 if (res.data.success) {
-                  alert(res.data.message);
+                  showNotification(res.data.message, "success");
                 }
 
                 setEdit(false);

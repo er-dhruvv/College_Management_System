@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const AddSubjects = () => {
+  const { showNotification } = useNotification();
   const [subjectList, setsubjectList] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setformData] = useState({
@@ -71,7 +73,7 @@ const AddSubjects = () => {
         practical: "",
         Assesment: "",
       });
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
 
       setShowForm(false);
     }

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 import StyledButtton from "../../Components/StyledButtton";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const ProfileFaculty = () => {
+  const { showNotification } = useNotification();
   const [userInfo, setUserInfo] = useState(null);
   const [Edit, setEdit] = useState(false);
   const [Email, setEmail] = useState("");
@@ -29,7 +31,7 @@ const ProfileFaculty = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
       setTempEmail(Email); // update backup
       setEdit(false);
     } catch (err) {
@@ -49,7 +51,7 @@ const ProfileFaculty = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
 
       setpassword("");
       setnewpassword("");
@@ -98,10 +100,11 @@ const ProfileFaculty = () => {
     try {
       const res = await axios.post(
         `${API_BASE}/upload-profile/${userInfo._id}?role=${userInfo.role}`,
+        formData,
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
 
       console.log(res.data);
       // ✅ instant UI update
@@ -197,11 +200,11 @@ const ProfileFaculty = () => {
 
           {/* Body */}
           <div className="p-8 grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-700 dark:text-gray-200">
-            <ProfileItem label="FacultyId" value={userInfo.facultyId} />
+            <ProfileItem label="FacultyId" value={userInfo.FacultyId} />
             <ProfileItem label="Salary" value={userInfo.salary} />
             <ProfileItem
               label="Date of Birth"
-              value={new Date(userInfo.DOB).toLocaleDateString()}
+              value={userInfo.DOB ? new Date(userInfo.DOB).toLocaleDateString() : ""}
             />
             <ProfileItem label="Category" value={userInfo.Category} />
 
@@ -227,7 +230,7 @@ const ProfileFaculty = () => {
               <ProfileItem label="Email" value={Email} />
             )}
 
-            <ProfileItem label="Mobile" value={userInfo.MONO} />
+            <ProfileItem label="Mobile" value={userInfo.MONOstd} />
 
             <ProfileItem label="Aadhar" value={userInfo.Aadhar} />
             <ProfileItem label="Address" value={userInfo.Address} />

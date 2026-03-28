@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 import StyledButtton from "../../Components/StyledButtton";
 
@@ -17,6 +18,7 @@ const days = {
 const slotTimes = [1, 2, 3, 4, 5, 6];
 
 const AddTimetable = () => {
+  const { showNotification } = useNotification();
   const [data, setData] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [subjectList, setSubjectList] = useState([]);
@@ -104,7 +106,7 @@ const AddTimetable = () => {
         withCredentials: true,
       });
 
-      alert(r.data.message);
+      showNotification(r.data.message, "success");
 
       getTimetable();
 
@@ -124,9 +126,9 @@ const AddTimetable = () => {
       console.log(error);
 
       if (error.response) {
-        alert(error.response.data.message);
+        showNotification(error.response.data.message, "error");
       } else {
-        alert("Server error");
+        showNotification("Server error", "error");
       }
     }
   };

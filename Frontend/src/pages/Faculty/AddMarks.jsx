@@ -1,10 +1,12 @@
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const AddMarks = () => {
+  const { showNotification } = useNotification();
   const [userInfo, setuserInfo] = useState([]);
   const [query, setquery] = useState("");
   const [subjectList, setsubjectList] = useState([]);
@@ -30,7 +32,7 @@ const AddMarks = () => {
         if (subList.data.success) {
           setsubjectList(subList.data.subjectList);
         } else {
-          alert(subList.data.message);
+          showNotification(subList.data.message, "error");
         }
       } catch (error) {
         console.log("Error fetching subjects", error);
@@ -127,7 +129,7 @@ const AddMarks = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
     } catch (error) {
       console.log(error);
     }

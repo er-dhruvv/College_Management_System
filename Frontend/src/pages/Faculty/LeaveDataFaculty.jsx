@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const LeaveDataFaculty = () => {
+  const { showNotification } = useNotification();
   const [leaveInfo, setleaveInfo] = useState([]);
   const [remarksMap, setRemarksMap] = useState({});
   const [LeaveStatus, setLeaveStatus] = useState("Pending");
@@ -47,8 +49,6 @@ const LeaveDataFaculty = () => {
         { withCredentials: true },
       );
 
-      // alert(res.data.message);
-
       // update UI instantly
       setleaveInfo((prev) =>
         prev.map((l) =>
@@ -62,7 +62,7 @@ const LeaveDataFaculty = () => {
       }));
     } catch (err) {
       console.log(err);
-      alert("Update failed");
+      showNotification("Update failed", "error");
     }
   };
   let filterLeave = leaveInfo.filter((leave) => {

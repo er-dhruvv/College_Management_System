@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 import NavBarStudent from "../../../Navigation/NavBarStudent";
 import StyledButtton from "../../Components/StyledButtton";
 const ProfileStudent = () => {
+  const { showNotification } = useNotification();
   const [userInfo, setUserInfo] = useState(null);
   const [Edit, setEdit] = useState(false);
   const [Email, setEmail] = useState("");
@@ -30,7 +32,7 @@ const ProfileStudent = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
       setTempEmail(Email); // update backup
       setEdit(false);
     } catch (err) {
@@ -50,7 +52,7 @@ const ProfileStudent = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
 
       setpassword("");
       setnewpassword("");
@@ -97,10 +99,11 @@ const ProfileStudent = () => {
     try {
       const res = await axios.post(
         `${API_BASE}/upload-profile/${userInfo._id}?role=${userInfo.role}`,
+        formData,
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
 
       console.log(res.data);
       // ✅ instant UI update

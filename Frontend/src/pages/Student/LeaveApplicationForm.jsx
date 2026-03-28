@@ -1,10 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarStudent from "../../../Navigation/NavBarStudent";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const LeaveApplicationForm = () => {
+  const { showNotification } = useNotification();
   const [TypeOfLeave, setTypeOfLeave] = useState("Medical Leave");
   const [DayDuration, setDayDuration] = useState("Full Day");
   const [FromDate, setFromDate] = useState(
@@ -31,7 +33,7 @@ const LeaveApplicationForm = () => {
         },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
     } catch (error) {
       console.error("Request failed:", error);
     }

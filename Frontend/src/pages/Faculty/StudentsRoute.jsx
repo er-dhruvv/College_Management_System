@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 
 const StudentsRoute = () => {
+  const { showNotification } = useNotification();
   const [userInfo, setuserInfo] = useState([]);
   const [query, setquery] = useState("");
   const [filters, setFilters] = useState({ sem: "", studentClass: "", batch: "" });
@@ -80,12 +82,12 @@ const StudentsRoute = () => {
         withCredentials: true,
       });
       if(res.data.success) {
-        alert("Student Created Successfully");
+        showNotification("Student Created Successfully", "success");
         setShowAddForm(false);
         fetchData();
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Error creating student");
+      showNotification(error.response?.data?.message || "Error creating student", "error");
     }
   };
 
