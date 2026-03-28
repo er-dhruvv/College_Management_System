@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNotification } from "../../context/NotificationContext";
 import NavBarFaculty from "../../../Navigation/NavBarFaculty";
 import StyledButtton from "../../Components/StyledButtton";
 
@@ -11,6 +12,7 @@ export const FillAttendance = () => {
   const [AbsentStudents, setAbsentStudents] = useState([]);
   const [facultySlots, setfacultySlots] = useState([]);
   const [slot, setslot] = useState("");
+  const { showNotification } = useNotification();
 
   const [AttendanceDate, setAttendanceDate] = useState(
     `${new Date().toISOString().split("T")[0]}`,
@@ -91,7 +93,7 @@ export const FillAttendance = () => {
       );
 
       if (res.data.success) {
-        alert(res.data.message);
+        showNotification(res.data.message, "success");
       }
     } catch (error) {
       console.log(error);

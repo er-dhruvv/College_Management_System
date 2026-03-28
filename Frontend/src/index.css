@@ -5,3 +5,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    @keyframes slide-in-toast {
+        0% {
+            transform: translateX(120%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes progress-bar {
+        0% { width: 100%; }
+        100% { width: 0%; }
+    }
+
+    .animate-slide-in {
+        animation: slide-in-toast 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    .notification-progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        animation: progress-bar 4s linear forwards;
+    }
+}

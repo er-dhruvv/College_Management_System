@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNotification } from "../context/NotificationContext";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
@@ -10,6 +11,7 @@ function Login() {
   const [role, setRole] = useState("Student");
 
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   async function loginHandler(e) {
     e.preventDefault();
@@ -29,12 +31,12 @@ function Login() {
       console.log(res);
 
       if (res.data.success) {
-        alert(res.data.message);
+        showNotification(res.data.message, "success");
         res.data.role === "Student"
           ? navigate("/DashboardStudent")
           : navigate("/DashboardFaculty");
       } else {
-        alert(res.data.message);
+        showNotification(res.data.message || "Login failed", "error");
       }
 
       setusername("");
