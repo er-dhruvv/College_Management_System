@@ -39,11 +39,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-
-    batch: {
-      type: String,
-      trim: true,
-    },
     username: {
       type: String,
       required: true,

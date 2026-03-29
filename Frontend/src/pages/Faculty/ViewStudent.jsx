@@ -23,8 +23,7 @@ const ViewStudent = () => {
     Address: "",
     profilePic: "",
     sem: "",
-    studentClass: "",
-    batch: ""
+    studentClass: ""
   });
 
   useEffect(() => {
@@ -207,14 +206,7 @@ const ViewStudent = () => {
               handleChange={handleChange}
             />
 
-            <Detail
-              label="Batch"
-              type="text"
-              name="batch"
-              value={formData.batch || Info.batch}
-              Edit={Edit}
-              handleChange={handleChange}
-            />
+
 
             <Detail
               label="Category"

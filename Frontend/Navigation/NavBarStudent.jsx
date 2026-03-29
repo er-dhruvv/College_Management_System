@@ -13,12 +13,14 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { useNotification } from "../src/context/NotificationContext";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 
 const NavBarStudent = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const { showNotification } = useNotification();
 
   const menuItems = [
     { name: "Home", icon: faHouse, path: "/DashboardStudent" },
@@ -40,7 +42,7 @@ const NavBarStudent = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
       navigate("/");
     } catch (err) {
       console.log(err);

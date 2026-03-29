@@ -3,6 +3,7 @@ import AttendanceSchema from "./Models/AttendanceSchema.js";
 import TimeTableSchema from "./Models/TimetableSchema.js";
 import subjectDetails from "./Models/SubjectSchema.js";
 import { verifyToken } from "./middleware/middleware.js";
+import Faculty from "./Models/FacultySchema.js";
 
 export let Attendance = (app) => {
   app.get("/timetable", async (req, res) => {
@@ -105,6 +106,7 @@ export let Attendance = (app) => {
     }
 
     
+    
     if (formData.slot % 2 === 1) {
       const nextslot = await TimeTableSchema.findOne({
         weekday: formData.weekday,
@@ -119,6 +121,23 @@ export let Attendance = (app) => {
           message: `Slot ${formData.slot + 1} already occupied`,
         });
       }
+    }
+
+    // Lookup faculty corresponding to the subject
+    const subjectDoc = await subjectDetails.findOne({ subject: formData.subject });
+    let facultyId = null;
+    if (subjectDoc) {
+      const facultyDoc = await Faculty.findOne({ subjectId: subjectDoc._id, role: "faculty" });
+      if (facultyDoc) {
+        facultyId = facultyDoc._id;
+      }
+    }
+
+    if (!facultyId) {
+      return res.status(400).json({
+        success: false,
+        message: "No faculty found assigned to this subject. Please assign a faculty to this subject first.",
+      });
     }
 
     await TimeTableSchema.findOneAndUpdate(
@@ -136,6 +155,7 @@ export let Attendance = (app) => {
           class: formData.studentClass,
           batch: formData.batch,
           sem: formData.sem,
+          facultyId: facultyId,
         },
       },
       { upsert: true }
@@ -272,12 +292,10 @@ export let Attendance = (app) => {
 
     app.get("/AttendanceData", verifyToken, async (req, res) => {
       try {
-        const { slot, date, studentClass, batch, sem } = req.query;
+        const { slot, date, sem } = req.query;
 
         let query = { role: "Student" };
-        if (studentClass) query.class = studentClass;
-        if (batch) query.batch = batch;
-        if (sem) query.sem = sem;
+        if (sem && sem !== "All") query.sem = sem;
 
         const students = await user.find(query).select({});
 

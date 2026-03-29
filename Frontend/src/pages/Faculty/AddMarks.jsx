@@ -20,7 +20,7 @@ const AddMarks = () => {
 
   const [addedTypes, setAddedTypes] = useState([]);
   const [marksData, setMarksData] = useState({});
-  const [filters, setFilters] = useState({ sem: "", studentClass: "", batch: "" });
+  const [filters, setFilters] = useState({ sem: "", studentClass: "" });
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -50,7 +50,6 @@ const AddMarks = () => {
       const queryParams = new URLSearchParams({
         ...(filters.sem && { sem: filters.sem }),
         ...(filters.studentClass && { studentClass: filters.studentClass }),
-        ...(filters.batch && { batch: filters.batch }),
       }).toString();
 
       let stdres = await axios.get(`${API_BASE}/api/students?${queryParams}`, {
@@ -90,10 +89,10 @@ const AddMarks = () => {
 
   const searchhandler = async (e) => {
     setquery(e.target.value);
-    
+
     if (e.target.value.trim() === '') {
-        fetchData();
-        return;
+      fetchData();
+      return;
     }
 
     let res = await axios.get(
@@ -154,7 +153,7 @@ const AddMarks = () => {
               <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">
                 Search Student
               </label>
-              <input type="text" placeholder="Search by name..." value={query} onChange={searchhandler} 
+              <input type="text" placeholder="Search by name..." value={query} onChange={searchhandler}
                 className="px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none"
               />
             </div>
@@ -162,16 +161,12 @@ const AddMarks = () => {
               <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">Semester Filter</label>
               <select name="sem" value={filters.sem} onChange={handleFilterChange} className="px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none">
                 <option value="">All Semesters</option>
-                {[1,2,3,4,5,6,7,8].map(s => <option key={s} value={s}>Semester {s}</option>)}
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <option key={s} value={s}>Semester {s}</option>)}
               </select>
             </div>
             <div className="flex flex-col">
               <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">Class Filter</label>
-              <input type="text" name="studentClass" placeholder="Class (e.g. A)" value={filters.studentClass} onChange={handleFilterChange} className="w-24 px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none"/>
-            </div>
-            <div className="flex flex-col">
-              <label className="text-sm font-semibold text-gray-600 dark:text-gray-300 mb-1">Batch Filter</label>
-              <input type="text" name="batch" placeholder="Batch (e.g. B1)" value={filters.batch} onChange={handleFilterChange} className="w-24 px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none"/>
+              <input type="text" name="studentClass" placeholder="e.g. A,B,C" value={filters.studentClass} onChange={handleFilterChange} className="w-24 px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none" />
             </div>
 
             {/* Select Subject */}

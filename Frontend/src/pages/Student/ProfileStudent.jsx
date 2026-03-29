@@ -211,7 +211,6 @@ const ProfileStudent = () => {
             <ProfileItem label="Category" value={userInfo.Category} />
             <ProfileItem label="Semester" value={userInfo.sem} />
             <ProfileItem label="Class" value={userInfo.class} />
-            <ProfileItem label="Batch" value={userInfo.batch} />
 
             {Edit ? (
               <div className="bg-gray-50 dark:bg-slate-900 rounded-xl p-4 shadow-sm">

@@ -12,6 +12,7 @@ export const FillAttendance = () => {
   const [AbsentStudents, setAbsentStudents] = useState([]);
   const [facultySlots, setfacultySlots] = useState([]);
   const [slot, setslot] = useState("");
+  const [filterSem, setFilterSem] = useState("");
   const { showNotification } = useNotification();
 
   const [AttendanceDate, setAttendanceDate] = useState(
@@ -38,10 +39,13 @@ export const FillAttendance = () => {
     };
 
     fetchSlots();
-  }, [AttendanceDate]);
+  }, [AttendanceDate, filterSem]);
 
   useEffect(() => {
-    if (!slot) return;
+    if (!slot) {
+      setInfo([]);
+      return;
+    }
     let fetchData = async () => {
       try {
         const selectedSlotObj = facultySlots.find(s => String(s.slot) === String(slot));
@@ -49,8 +53,6 @@ export const FillAttendance = () => {
           params: {
             slot,
             date: AttendanceDate,
-            studentClass: selectedSlotObj?.class || "",
-            batch: selectedSlotObj?.batch || "",
             sem: selectedSlotObj?.sem || "",
           },
           withCredentials: true,
@@ -67,7 +69,7 @@ export const FillAttendance = () => {
     };
 
     fetchData();
-  }, [slot, AttendanceDate]);
+  }, [slot, AttendanceDate, filterSem]);
 
   let presentHandler = (id) => {
     setAbsentStudents(
@@ -109,8 +111,28 @@ export const FillAttendance = () => {
             Fill Attendance
           </h1>
 
-          {/* Slot + Date Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Filters + Slot + Date Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="flex flex-col">
+              <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                Semester
+              </label>
+              <select
+                value={filterSem}
+                onChange={(e) => {
+                  setFilterSem(e.target.value);
+                  setslot("");
+                  setPresentStudents([]);
+                }}
+                className="border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+              >
+                <option value="">All Semesters</option>
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(s => (
+                  <option key={s} value={s}>Semester {s}</option>
+                ))}
+              </select>
+            </div>
+
             <div className="flex flex-col">
               <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">
                 Slot
@@ -121,17 +143,21 @@ export const FillAttendance = () => {
                   setslot(e.target.value);
                   setPresentStudents([]);
                 }}
-                className="border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
               >
                 <option value="">Select a Slot</option>
-                {facultySlots.length === 0 ? (
+                {facultySlots
+                  .filter((s) => (!filterSem || String(s.sem) === filterSem))
+                  .length === 0 ? (
                   <option value="" disabled>No Slots Available</option>
                 ) : (
-                  facultySlots.map((s) => (
-                    <option key={s.slot} value={s.slot}>
-                      Slot-{s.slot} - {s.subject} {s.class ? `(${s.class})` : ''}
-                    </option>
-                  ))
+                  facultySlots
+                    .filter((s) => (!filterSem || String(s.sem) === filterSem))
+                    .map((s) => (
+                      <option key={s.slot} value={s.slot}>
+                        Slot-{s.slot} - {s.subject}
+                      </option>
+                    ))
                 )}
               </select>
             </div>
@@ -215,11 +241,10 @@ export const FillAttendance = () => {
                         <td className="px-6 py-4 text-center">
                           <button
                             onClick={() => presentHandler(user._id)}
-                            className={`h-6 w-6 rounded flex items-center justify-center font-bold transition-colors ${
-                              AbsentStudents.includes(user._id)
-                                ? "bg-red-600 text-white border-red-600"
-                                : "bg-green-600 text-white border-green-600"
-                            }`}
+                            className={`h-6 w-6 rounded flex items-center justify-center font-bold transition-colors ${AbsentStudents.includes(user._id)
+                              ? "bg-red-600 text-white border-red-600"
+                              : "bg-green-600 text-white border-green-600"
+                              }`}
                           >
                             {AbsentStudents.includes(user._id) ? "✕" : "✓"}
                           </button>

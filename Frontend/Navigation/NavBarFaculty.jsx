@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNotification } from "../src/context/NotificationContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import NavbarListMenu from "../src/Components/NavbarListMenu";
@@ -20,6 +21,7 @@ const API_BASE = import.meta.env.VITE_BACKEND_URL ?? "http://localhost:5000";
 const NavBarFaculty = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const { showNotification } = useNotification();
 
   const menuItems = [
     { name: "Home", icon: faHouse, path: "/DashboardFaculty" },
@@ -38,7 +40,7 @@ const NavBarFaculty = () => {
         { withCredentials: true },
       );
 
-      alert(res.data.message);
+      showNotification(res.data.message, "success");
       navigate("/");
     } catch (err) {
       console.log(err);

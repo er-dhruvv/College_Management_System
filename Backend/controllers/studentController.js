@@ -3,12 +3,11 @@ import bcrypt from "bcryptjs";
 
 export const getStudents = async (req, res) => {
   try {
-    const { sem, studentClass, batch, searchTerm } = req.query;
+    const { sem, studentClass, searchTerm } = req.query;
     let query = { role: "Student" };
 
     if (sem) query.sem = sem;
     if (studentClass) query.class = studentClass;
-    if (batch) query.batch = batch;
     
     if (searchTerm) {
       query.$or = [
@@ -45,11 +44,11 @@ export const createStudent = async (req, res) => {
   try {
     const {
       fullname, Enrollno, rollno, DOB, Category, Address, email, 
-      sem, studentClass, batch, username, password, Aadhar, MONOstd, MONOsparent
+      sem, studentClass, username, password, Aadhar, MONOstd, MONOsparent
     } = req.body;
 
-    if (!fullname || !Enrollno || !email || !username || !password || !sem || !studentClass || !batch || !Aadhar) {
-      return res.status(400).json({ success: false, message: "Please provide all required fields (fullname, Enrollno, email, username, password, sem, class, batch, Aadhar)" });
+    if (!fullname || !Enrollno || !email || !username || !password || !sem || !studentClass || !Aadhar) {
+      return res.status(400).json({ success: false, message: "Please provide all required fields (fullname, Enrollno, email, username, password, sem, class, Aadhar)" });
     }
 
     const existingUser = await user.findOne({ $or: [{ email }, { username }, { Enrollno }] });
@@ -62,7 +61,7 @@ export const createStudent = async (req, res) => {
 
     const newStudent = new user({
       fullname, Enrollno, rollno, DOB, Category, Address, email,
-      sem, class: studentClass, batch, username, password: hashedPassword, role: "Student",
+      sem, class: studentClass, username, password: hashedPassword, role: "Student",
       Aadhar, MONOstd, MONOsparent
     });
 

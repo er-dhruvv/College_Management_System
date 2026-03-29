@@ -10,10 +10,10 @@ const StudentsRoute = () => {
   const { showNotification } = useNotification();
   const [userInfo, setuserInfo] = useState([]);
   const [query, setquery] = useState("");
-  const [filters, setFilters] = useState({ sem: "", studentClass: "", batch: "" });
+  const [filters, setFilters] = useState({ sem: "", studentClass: "" });
   const [showAddForm, setShowAddForm] = useState(false);
   const [newStudent, setNewStudent] = useState({
-    fullname: "", Enrollno: "", email: "", sem: "", studentClass: "", batch: "", username: "", password: "", Aadhar: ""
+    fullname: "", Enrollno: "", email: "", sem: "", studentClass: "", username: "", password: "", Aadhar: ""
   });
 
   const Navigate = useNavigate();
@@ -32,7 +32,6 @@ const StudentsRoute = () => {
       const queryParams = new URLSearchParams({
         ...(filters.sem && { sem: filters.sem }),
         ...(filters.studentClass && { studentClass: filters.studentClass }),
-        ...(filters.batch && { batch: filters.batch }),
       }).toString();
 
       let res = await axios.get(`${API_BASE}/api/students?${queryParams}`, {
@@ -127,14 +126,6 @@ const StudentsRoute = () => {
             onChange={handleFilterChange}
             className="w-32 px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
-          <input
-            type="text"
-            name="batch"
-            placeholder="Batch (e.g. B1)"
-            value={filters.batch}
-            onChange={handleFilterChange}
-            className="w-32 px-4 py-3 rounded-xl border border-gray-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          />
           <button 
             onClick={() => setShowAddForm(!showAddForm)}
             className="px-6 py-3 bg-green-600 text-white rounded-xl shadow hover:bg-green-700 transition font-semibold"
@@ -165,10 +156,6 @@ const StudentsRoute = () => {
               />
               <input type="text" placeholder="Class" required 
                 onChange={(e) => setNewStudent({...newStudent, studentClass: e.target.value})} 
-                className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none" 
-              />
-              <input type="text" placeholder="Batch" required 
-                onChange={(e) => setNewStudent({...newStudent, batch: e.target.value})} 
                 className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none" 
               />
               <input type="text" placeholder="Username" required 
