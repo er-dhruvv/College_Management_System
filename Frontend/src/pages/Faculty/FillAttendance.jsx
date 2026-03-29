@@ -34,7 +34,7 @@ export const FillAttendance = () => {
           setslot("");
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -64,7 +64,7 @@ export const FillAttendance = () => {
           setAbsentStudents(res.data.AbsentStudents);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -98,7 +98,7 @@ export const FillAttendance = () => {
         showNotification(res.data.message, "success");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

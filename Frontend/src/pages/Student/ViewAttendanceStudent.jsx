@@ -50,7 +50,7 @@ const ViewAttendanceStudent = () => {
         });
         setAttendance(response.data.Info);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
@@ -73,7 +73,8 @@ const ViewAttendanceStudent = () => {
     attendance.forEach((item) => {
       const date = new Date(item.date).toLocaleDateString("en-CA");
       if (!map[date]) map[date] = {};
-      map[date][item.slot] = item.status === "Present" ? "P" : "A";
+      const status = String(item.status || "").toLowerCase();
+      map[date][item.slot] = (status === "present" || status === "p") ? "P" : "A";
     });
     return map;
   }, [attendance]);

@@ -28,7 +28,7 @@ function Login() {
           withCredentials: true,
         },
       );
-      console.log(res);
+      // console.log(res);
 
       if (res.data.success) {
         showNotification(res.data.message, "success");

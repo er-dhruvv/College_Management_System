@@ -35,7 +35,7 @@ const AddMarks = () => {
           showNotification(subList.data.message, "error");
         }
       } catch (error) {
-        console.log("Error fetching subjects", error);
+        // console.log("Error fetching subjects", error);
       }
     };
     fetchSubjects();
@@ -58,7 +58,7 @@ const AddMarks = () => {
 
       setuserInfo(stdres.data.Info);
     } catch (error) {
-      console.log("Error fetching students", error);
+      // console.log("Error fetching students", error);
     }
   };
 
@@ -76,7 +76,7 @@ const AddMarks = () => {
           setMarksData(res.data.marks);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
 
       setMarksType(["Midsem", "SEE", "PracticalExam", "RegularAssesment"]);
@@ -130,7 +130,7 @@ const AddMarks = () => {
 
       showNotification(res.data.message, "success");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

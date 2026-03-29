@@ -40,7 +40,7 @@ const StudentsRoute = () => {
 
       setuserInfo(res.data.Info);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

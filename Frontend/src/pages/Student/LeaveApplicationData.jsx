@@ -19,7 +19,7 @@ const LeaveApplicationData = () => {
 
         setleaveInfo(res.data.info);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 

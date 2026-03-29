@@ -348,7 +348,7 @@ export let Attendance = (app) => {
     } catch (error) {
       console.log(error)
       res.status(500).json({
-        success :true,
+        success :false,
         
       })
     }

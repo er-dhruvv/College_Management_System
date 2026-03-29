@@ -23,7 +23,7 @@ const DashboardFaculty = () => {
 
         setUsername(res.data.username);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         navigate("/");
       }
     };

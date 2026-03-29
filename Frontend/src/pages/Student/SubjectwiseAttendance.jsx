@@ -33,7 +33,7 @@ const SubjectwiseAttendance = () => {
         });
         setAttendance(response.data.Info);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
@@ -45,6 +45,7 @@ const SubjectwiseAttendance = () => {
 
     let start = new Date(startDateStr);
     let end = new Date(endDateStr);
+    end.setHours(23, 59, 59, 999);
 
     if (end < start) return [];
 
@@ -52,17 +53,14 @@ const SubjectwiseAttendance = () => {
 
     // Calculate theoretical total lectures from TimeTable
     const myTimetable = data.filter(d =>
-      (!d.class || d.class === studentInfo.class) &&
-      (!d.batch || d.batch === studentInfo.batch || !d.IsLab)
-      // Wait, the timetable in the API view returns ALL timetable, we need to filter for the student's class and batch. 
-      // In earlier components, it didn't filter by class/batch, it just showed all. But let's be safe.
-      // Actually, ViewAttendanceStudent doesn't filter data by class/batch, but in reality it should.
+      (!d.class || d.class === studentInfo.class || d.class === "All") &&
+      (!d.batch || d.batch === studentInfo.batch || d.batch === "All" || !d.IsLab)
     );
 
     // Filter data if it has class and batch properties to match the student's
     const filteredTimetable = myTimetable.filter(item => {
-      const matchClass = item.class ? item.class === studentInfo.class : true;
-      const matchBatch = item.IsLab && item.batch ? item.batch === studentInfo.batch : true;
+      const matchClass = item.class ? (item.class === studentInfo.class || item.class === "All") : true;
+      const matchBatch = item.IsLab && item.batch ? (item.batch === studentInfo.batch || item.batch === "All") : true;
       return matchClass && matchBatch;
     });
 
@@ -88,19 +86,27 @@ const SubjectwiseAttendance = () => {
     }
 
     // Now calculate actual attendance occurrences
-    // The attendance array has date, slot, status
+    const startStr = start.toISOString().split("T")[0];
+    const endStr = end.toISOString().split("T")[0];
+
     attendance.forEach(att => {
-      // Attendance object has {date, slot, status}
-      // If we want to strictly match `startDate` and `endDate`:
-      const attDate = new Date(att.date);
-      if (attDate >= start && attDate <= end) {
-        // we need to find the subject for this slot & day
+      const attDateStr = new Date(att.date).toISOString().split("T")[0];
+      
+      if (attDateStr >= startStr && attDateStr <= endStr) {
+        const attDate = new Date(att.date);
         const attDay = attDate.getDay() === 0 ? 7 : attDate.getDay();
-        const slotData = filteredTimetable.find(t => t.weekday === attDay && t.slot === att.slot);
+        
+        // Match slot: either exact match, or if it's a lab, check if it's the second slot of a lab session
+        const slotData = filteredTimetable.find(t => 
+          t.weekday === attDay && 
+          (Number(t.slot) === Number(att.slot) || (t.IsLab && Number(t.slot) === Number(att.slot) - 1))
+        );
+
         if (slotData && statsMap[slotData.subject]) {
-          if (att.status === "Present") {
+          const status = String(att.status || "").toLowerCase();
+          if (status === "present" || status === "p") {
             statsMap[slotData.subject].present += 1;
-          } else if (att.status === "Absent") {
+          } else if (status === "absent" || status === "a") {
             statsMap[slotData.subject].absent += 1;
           }
         }

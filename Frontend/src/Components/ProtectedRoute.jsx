@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-  console.log(token ,"from pt")
+  // console.log(token ,"from pt")
 
   if (!token) {
     return <Navigate to="/" replace />;

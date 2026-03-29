@@ -23,7 +23,7 @@ const LeaveDataFaculty = () => {
 
         setleaveInfo(res.data.info);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
 
@@ -61,7 +61,7 @@ const LeaveDataFaculty = () => {
         [leaveId]: "",
       }));
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       showNotification("Update failed", "error");
     }
   };

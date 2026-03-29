@@ -105,7 +105,7 @@ const ProfileStudent = () => {
 
       showNotification(res.data.message, "success");
 
-      console.log(res.data);
+      // console.log(res.data);
       // ✅ instant UI update
       setUserInfo((prev) => ({
         ...prev,

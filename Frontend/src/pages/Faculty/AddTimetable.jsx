@@ -43,7 +43,7 @@ const AddTimetable = () => {
       );
       setData(res.data.Info);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -63,7 +63,7 @@ const AddTimetable = () => {
           }));
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
@@ -123,7 +123,7 @@ const AddTimetable = () => {
 
       setShowForm(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       if (error.response) {
         showNotification(error.response.data.message, "error");
