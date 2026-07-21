@@ -297,7 +297,7 @@ export let Attendance = (app) => {
         let query = { role: "Student" };
         if (sem && sem !== "All") query.sem = sem;
 
-        const students = await user.find(query).select({});
+        const students = await user.find(query).select({}).sort({ rollno: 1 });
 
         const attendance = await AttendanceSchema.find({
           date: new Date(date),

@@ -59,7 +59,13 @@ export const FillAttendance = () => {
         });
 
         if (res.data.success) {
-          setInfo(res.data.students);
+          const sortedStudents = [...(res.data.students || [])].sort((a, b) => {
+            const rA = Number(a.rollno);
+            const rB = Number(b.rollno);
+            if (!isNaN(rA) && !isNaN(rB)) return rA - rB;
+            return String(a.rollno || "").localeCompare(String(b.rollno || ""), undefined, { numeric: true });
+          });
+          setInfo(sortedStudents);
           setPresentStudents(res.data.presentStudents);
           setAbsentStudents(res.data.AbsentStudents);
         }

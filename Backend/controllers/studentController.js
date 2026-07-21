@@ -16,7 +16,7 @@ export const getStudents = async (req, res) => {
       ];
     }
 
-    const students = await user.find(query).select("-password");
+    const students = await user.find(query).select("-password").sort({ rollno: 1 });
     res.status(200).json({ success: true, Info: students });
   } catch (error) {
     console.error(error);
